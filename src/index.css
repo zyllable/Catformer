@@ -1,0 +1,148 @@
+* {
+	box-sizing: border-box;
+	font-family: sans-serif;
+	outline: 0px solid black;
+}
+/* notes
+formatting: the anne method because i realized its better because i dont have to sort them later
+*/
+body, header, nav, main, footer, div, p, a {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+body {
+	background-color: lch(2% 26 295);
+	color: white;
+}
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+}
+h1 {
+	margin: .3em 0;
+}
+h2 {
+	margin: .2em 0;
+}
+h6 {
+	margin: 0;
+}
+main {
+	margin: .5em 0 0;
+	min-height: 100vh;
+	font-size: max(1em, 2.3vmax);
+	border: 1em lch(2% 26 300) solid;
+	background-color: lch(2% 26 300);
+	border-radius: .4em .4em 0 0;
+}
+nav {
+	background-color: lch(2% 26 321);
+	display: flex;
+	font-size: max(1em, 2.3vmax);
+	border-color: lch(2% 26 321);
+	border-style: solid;
+	border-radius: 0 0 .4em .4em;
+	border-width: .4em;
+}
+nav>* {
+	flex: 1;
+	text-align: center;
+	border: solid black;
+	border-width: 0 .2em 0 0;
+	margin: auto;
+	padding: .05em;
+}
+nav a:last-child {
+	border-width: 0;
+}
+nav a:link {
+	color: lch(40% 80 10);
+}
+nav a:visited {
+	color: lch(40% 80 300);
+}
+nav header {
+	flex: 3;
+}
+nav header p {
+	background-image: linear-gradient(to right, lch(90% 110 15), lch(90% 110 30), lch(90% 110 45), lch(90% 110 60), lch(90% 110 75), lch(90% 110 90), lch(90% 110 105), lch(90% 110 120), lch(90% 110 135), lch(90% 110 150), lch(90% 110 165), lch(90% 110 180));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: white;
+}
+.bigLink {
+	display: block;
+	text-align: center;
+	width: 100%;
+	height: 25%;
+	border: .4em solid;
+	border-radius: .4em;
+}
+.bigLink a:link, .bigLink a:visited {
+	color: white;
+}
+.center {
+	text-align: center;
+}
+.flexContainer {
+	display: flex;
+	flex-direction: column;
+	width: 50vw;
+	margin: auto;
+	height: 50vh;
+	justify-content: space-around;
+	gap: .4em;
+}
+.game {
+	background-color: lch(58% 80 34);
+}
+.inlineImage {
+	float: right;
+	width: 14em;
+	border: 1em solid black;
+	border-radius: 2em;
+}
+.projectFlex {
+	display: flex;
+	flex-wrap: wrap;
+	width: 75%;
+	margin: auto;
+	justify-content: space-evenly;
+	row-gap: 1em;
+}
+.projectFlex div {
+	width: 45%;
+	border: .5em solid black;
+	padding: .5em;
+}
+.projectFlex div a:link, .projectFlex div a:visited {
+	color: white;
+}
+.smallMain {
+	font-size: max(.5em, 1.5vmax);
+}
+/* breaking order for these because page order */
+.about {
+	background-color: lch(50% 100 300);
+	border-color: lch(50% 100 300);
+}
+.youtube {
+	background-color: lch(50% 100 20);
+	border-color: lch(50% 100 20);
+}
+.twitch {
+	background-color: lch(50% 100 320);
+	border-color: lch(50% 100 320);
+}
+.art {
+	background-color: lch(50% 100 220);
+	border-color: lch(50% 100 220);
+}
+.coding {
+	background-color: lch(50% 100 150);
+	border-color: lch(50% 100 150);
+}
