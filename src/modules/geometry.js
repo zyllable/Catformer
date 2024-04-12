@@ -111,7 +111,6 @@ export class Circle {
 		this.r = r;
 	}
 }
-
 /**
  * Represents a coordinate pair and a corresponding pair of distances
  */

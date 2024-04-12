@@ -1,7 +1,7 @@
 /**
- * The default interval for movement and animations
+ * The default interval for movement and animations (1 "tick")
  */
-export const STANDARD_INTERVAL = 50; //20 times per second
+export const STANDARD_INTERVAL = 20; //50 times per second
 
 /**
  * Returns the maximum index of an array

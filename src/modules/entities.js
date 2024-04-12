@@ -64,6 +64,7 @@ class PathedSpecialEntity extends SpecialEntity {
 	/**
 	 * An array of coordinate pair arrays [x, y], indicating the one way path the track moves on
 	 */
+
 	track = [];
 
 	special() {

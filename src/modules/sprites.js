@@ -26,6 +26,15 @@ export class Sprite extends Box {
 		this.image = image;
 	}
 
+	constructor(sprite) {
+		this.id = sprite.id;
+		this.x = sprite.x;
+		this.y = sprite.y;
+		this.image = sprite.image;
+		this.width = sprite.width;
+		this.height = sprite.height;
+	}
+
 	/**
 	 * Renders the sprite onto the canvas
 	 * @param {CanvasRenderingContext2D} context - The 2d context to render the sprite with
@@ -75,6 +84,12 @@ export class SpriteSheet {
 			}
 		}
 		this.currentFrame = this.frames[0];
+	}
+	constructor(spriteSheet) {
+		this(spriteSheet.image, spriteSheet.frameWidth, spriteSheet.frameHeight);
+		for (let frameGroup in spriteSheet.frameGroups) {
+			this.frameGroups.push(frameGroup);
+		}
 	}
 
 	/**
