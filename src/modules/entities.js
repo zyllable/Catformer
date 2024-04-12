@@ -110,5 +110,6 @@ export class Ice extends SpecialEntity {
 export class Twine extends SpecialEntity {
 	special() {
 		this.parent.moveMode = 2;
+		return false;
 	}
 }
