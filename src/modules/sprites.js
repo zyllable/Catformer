@@ -1,5 +1,5 @@
-import { Box } from "./geometry";
-import { getIntegerRange } from "./reusables";
+import { Box } from "./geometry.js";
+import { getIntegerRange } from "./reusables.js";
 
 /**
  * An image that can be rendered
