@@ -1,5 +1,4 @@
-//TODO: make scene
-//has collisions, player (only one), and methods that child entities can interact with
+import { collideCircleVector } from "./collision.js";
 
 /**
  * A container for game level logic
@@ -9,20 +8,21 @@ export class Scene {
 		this.collisions = [];
 		this.entities = [];
 		this.ui = [];
+		this.player = null;
 	}
 
 	/**
 	 * Adds collision to the scene
-	 * 
+	 *
 	 * Use referring classes for special collision
-	 * @param {Vector|Sphere|ReferringVector|ReferringSphere} collision - The collision to be added 
+	 * @param {Vector|Sphere|ReferringVector|ReferringSphere} collision - The collision to be added
 	 */
 	addCollision(collision) {
 		this.collisions.push(collision);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param {Sprite|AnimatedSprite|SpecialEntity} entity - The entity to be added
 	 * @param {true} special - Whether the entity is a SpecialEntity
 	 */
@@ -46,6 +46,20 @@ export class Scene {
 	 * @param {CanvasRenderingContext2D} context - The 2d rendering context to render on
 	 */
 	render(context) {
+		for (let entity of this.entities) {
+			entity.render(context);
+		}
+	}
 
+	/**
+	 * determines if the player should bounce, priority is based on order of collision array
+	 */
+	doCollisions() {
+		for (let collision of this.collisions) {
+			if (collideCircleVector(this.player.circle, vector)) {
+				entity = this.entities[collision.id]; //collision is assumed to be an owned collision
+				this.player.bounce(typeof entity.special !== "undefined" ? entity.special() : true) // if special, call special first
+			}
+		}
 	}
 }

@@ -1,6 +1,4 @@
-//TODO: collisions. default collision exists and contains a call to a bounce function
-
-import { Circle, Vector } from "./geometry";
+import { getProjectedPoint, pythagoreanTheorem, Vector, Circle } from "./geometry.js";
 
 /**
  * A vector with an ID that refers to the entity it is part of
@@ -20,4 +18,16 @@ export class ReferringCircle extends Circle {
 		super(x, y, r);
 		this.id = id;
 	}
+}
+
+/**
+ * Determines if a circle and a vector collide, returns true if they do
+ * @param {Circle} circle
+ * @param {Vector} vector
+ */
+export const collideCircleVector = (circle, vector) => {
+	const [x, y] = getProjectedPoint(circle.x, circle.y, vector); //x and y of the nearest point on the vector to the center of the sphere
+	const dx = circle.x - x;
+	const dy = circle.y - y;
+	return circle.r <= pythagoreanTheorem(dx, dy); //is the distance between circle center and point greater than radius
 }

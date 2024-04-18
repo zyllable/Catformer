@@ -13,6 +13,7 @@ export class SpecialEntity extends AnimatedSprite {
 		 * The parent scene of the entity, not defined until after it is added to the scene
 		 */
 		this.parent = null;
+		this.special = true;
 	}
 
 	/**

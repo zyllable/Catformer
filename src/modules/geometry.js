@@ -1,4 +1,4 @@
-import { STANDARD_INTERVAL } from "./reusables";
+import { STANDARD_INTERVAL } from "./reusables.js";
 
 /**
  * Represents a rectangle
@@ -22,7 +22,7 @@ export class Rectangle {
 /**
  * Represents a rectangle with functions for moving
  */
-export class Box {
+export class Box extends Rectangle {
 	/**
 	 *
 	 * @param {number} id - An id to refer to the rectangle
@@ -147,6 +147,13 @@ export class Vector {
 		return vector1.dx * vector2.dx + vector1.dy * vector2.dy;
 	}
 
+	/**
+	 * Same as Vector.dotProduct but uses two arrays of [dx, dy]
+	 */
+	static simpleDotProduct(vector1, vector2) {
+		return vector1[0] * vector2[0] + vector1[1] * vector2[1];
+	}
+
 	getUnitVector() {
 		return new Vector(this.x, this.y, this.dx / this.magnitude, this.dy / this.magnitude);
 	}
@@ -171,5 +178,32 @@ export class Vector {
 
 	//TODO: make a static method that produces a vector from coordinates, an angle, and a magnitude
 	//TODO: make a static method that produces a vector from 2 pairs of coordinates (start and end)
-	//both of these are static because the constructor cant be overloaded as these would have the same amount of arguments as the existing one
+	//both of these are static because the constructor cant be overloaded
+
+	static getVectorFromAngle(x, y, angle, magnitude) {
+		return new Vector(x, y, Math.cos(angle) * magnitude, Math.sin(angle) * magnitude);
+	}
+}
+
+/**
+ * projects a point on to a vector
+ * returns an array of [x, y]
+ */
+export const getProjectedPoint = (x, y, vector) => {
+	//this uses simplified vectors of [dx, dy] for speed instead of a class with (x, y, dx, dy)
+	//refer to chart in notebook for explanation
+	let abVector = [vector.dx, vector.dy]; //base vector
+	let acVector = [x - vector.x, y - vector.y] //dx and dy between starting point of vector and point
+
+	let dotABAC = Vector.simpleDotProduct(abVector, acVector);
+	let dotACAB = Vector.simpleDotProduct(acVector, abVector);
+	let adVector = [abVector[0] * dotABAC / dotACAB, abVector[1] * dotABAC / dotACAB]//vector between a and d, the projected point
+	return [vector.x + adVector[0], vector.y + adVector[1]];
+}
+
+/**
+ * returns the result of the pythagorean theorem from 2 sides of a right triangle (can be a dx and dy to get distance)
+ */
+export const pythagoreanTheorem = (side1, side2) => {
+	return Math.sqrt(side1 ** 2 + side2 ** 2);
 }
