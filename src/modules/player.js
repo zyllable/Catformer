@@ -3,6 +3,8 @@ import { AnimatedSprite } from "./sprites.js";
 
 /**
  * Represents the player and the methods to control it
+ * 
+ * x and y should not be directly changed, call updateX() and updateY() instead
  *
  * Spritesheet information:
  *
@@ -38,34 +40,38 @@ export class Player extends AnimatedSprite {
 		/**
 		 * A circle representing the collision of the player
 		 */
-		this.circle = new Circle(this.x, this.y, collisionRadius);
+		this.centerOffsetX = width / 2;
+		this.centerOffsetY = height / 2;
+
+		this.circle = new Circle(this.x + this.centerOffsetX, this.y + this.centerOffsetY, collisionRadius);
 		/**
 		 * A reused vector that represents the motion of the player
+		 * 
+		 * Coordinates are set to 0 and are not used
 		 */
-		this.vector = new Vector(x, y, 0, 0);
+		this.vector = new Vector(0, 0, 0, 0);
 	}
 
+
 	move() {
-		this.x += this.dx;
-		this.y += this.dy;
+		this.updateX(this.x + this.dx);
+		this.updateY(this.y + this.dy);
 	}
 
 	/**
 	 * @param {number} x
 	 */
-	set x(x) {
-		super.x = x;
-		this.vector.x = x;
-		this.circle.x = x;
+	updateX(x) {
+		this.x = x;
+		this.circle.x = x + this.centerOffsetX;
 	}
 
 	/**
 	 * @param {number} y
 	 */
-	set y(y) {
-		super.y = y;
-		this.vector.y = y;
-		this.circle.y = y;
+	updateY(y) {
+		this.y = y;
+		this.circle.y = y + this.centerOffsetY;
 	}
 
 	/**

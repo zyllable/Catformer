@@ -4,6 +4,13 @@
 export const STANDARD_INTERVAL = 20; //50 times per second
 
 /**
+ * 2 times Pi
+ * 
+ * This exists for optimization purposes i guess
+ */
+export const twoPI = 2 * Math.PI;
+
+/**
  * Returns the maximum index of an array
  * @param {array} array - The array to be used
  * @returns Number

@@ -26,14 +26,15 @@ export class Sprite extends Box {
 		this.image = image;
 	}
 
-	constructor(sprite) {
+	//TODO: turn into static
+	/*constructor(sprite) {
 		this.id = sprite.id;
 		this.x = sprite.x;
 		this.y = sprite.y;
 		this.image = sprite.image;
 		this.width = sprite.width;
 		this.height = sprite.height;
-	}
+	}*/
 
 	/**
 	 * Renders the sprite onto the canvas
@@ -85,11 +86,12 @@ export class SpriteSheet {
 		}
 		this.currentFrame = this.frames[0];
 	}
-	constructor(spriteSheet) {
-		this(spriteSheet.image, spriteSheet.frameWidth, spriteSheet.frameHeight);
+	static duplicateSpriteSheet(spriteSheet) {
+		let newSheet = this(spriteSheet.image, spriteSheet.frameWidth, spriteSheet.frameHeight);
 		for (let frameGroup in spriteSheet.frameGroups) {
 			this.frameGroups.push(frameGroup);
 		}
+		return newSheet;
 	}
 
 	/**
@@ -186,8 +188,10 @@ export class AnimatedSprite extends Sprite {
 	/**
 	 * Renders the sprite on the canvas
 	 * @param {CanvasRenderingContext2D} context - The 2d context to render the sprite with
+	 * @param {number} xOffset - The offset of the camera view
+	 * @param {number} yOffset - The y offset of the camera view
 	 */
-	render(context) {
+	render(context, xOffset = 0, yOffset = 0) {
 		context.save();
 		context.rotate(-this.angle); //negative otherwise it works clockwise
 		context.drawImage(this.spriteSheet.image,
@@ -195,8 +199,8 @@ export class AnimatedSprite extends Sprite {
 			this.spriteSheet.currentFrame.y,
 			this.spriteSheet.frameWidth,
 			this.spriteSheet.frameHeight,
-			this.x,
-			this.y,
+			this.x - xOffset,
+			this.y - yOffset,
 			this.width,
 			this.height
 		)
@@ -207,7 +211,9 @@ export class AnimatedSprite extends Sprite {
 	animationInterval;
 
 	/**
-	 * Starts the current animation of the sprite - Supports chaining
+	 * Starts the current animation of the sprite
+	 * 
+	 * Supports chaining
 	 * @param {boolean} reverse - Whether the animation runs in reverse or not
 	 * @param {number} interval - The interval in milliseconds between each frome
 	 * @returns this
@@ -222,7 +228,8 @@ export class AnimatedSprite extends Sprite {
 	}
 
 	/**
-	 * Stops the current animation of the sprite -
+	 * Stops the current animation of the sprite
+	 * 
 	 * Supports Chaining
 	 * @returns this
 	 */
@@ -232,7 +239,9 @@ export class AnimatedSprite extends Sprite {
 	}
 
 	/**
-	 * Switches to a specific frame in the current group and optionally to a different frame group - Supports chaining
+	 * Switches to a specific frame in the current group and optionally to a different frame group
+	 * 
+	 * Supports chaining
 	 * @param {number} frame - The frame index to switch to
 	 * @param {number} group - The frame group to switch to
 	 * @returns this
@@ -246,7 +255,9 @@ export class AnimatedSprite extends Sprite {
 	}
 
 	/**
-	 * Switches to a specific animation - Supports chaining
+	 * Switches to a specific animation 
+	 * 
+	 * Supports chaining
 	 * @param {number} frameGroup - The animation to switch to
 	 * @returns this
 	 */

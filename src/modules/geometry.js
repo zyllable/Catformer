@@ -138,6 +138,17 @@ export class Vector {
 	}
 
 	/**
+	 * Recalculates the magnitude
+	 * 
+	 * Required any time the vector's magnitude changes
+	 * 
+	 * Not used in setters due to the problem of changing both vectors at the same time calling it twice
+	 */
+	recalcMagnitude() {
+		this.magnitude = Math.sqrt((this.dx ** 2) + (this.dy ** 2));
+	}
+
+	/**
 	 * Finds the dot product between two vectors
 	 * @param {Vector} vector1
 	 * @param {Vector} vector2
