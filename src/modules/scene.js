@@ -80,10 +80,12 @@ export class Scene {
 			ctx.moveTo(collision.x, collision.y);
 			ctx.lineTo(collision.x + collision.dx, collision.y + collision.dy);
 		}
-		ctx.moveTo(this.player.circle.x, this.player.circle.y)
-		ctx.arc(this.player.circle.x, this.player.circle.y, this.player.circle.r, 0 , twoPI)
+		ctx.moveTo(this.player.circle.x, this.player.circle.y);
+		ctx.arc(this.player.circle.x, this.player.circle.y, this.player.circle.r, 0, twoPI);
 		ctx.stroke();
 		ctx.beginPath();
+
+		console.log(this.player.x, this.player.y, this.player.dx, this.player.dy)
 	}
 
 	/**
@@ -127,8 +129,10 @@ export class Scene {
 		}
 
 		//gravity
-		this.player.dy -= 10;
+		this.player.dy = this.player.dy - 10;
 		this.player.vector.recalcMagnitude();
+
+		this.player.move()
 
 		this.timer += .2;
 		this.xOffset = this.player.circle.x; //sets to the center of the player

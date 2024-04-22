@@ -29,13 +29,22 @@ const main = () => {
 
 	//create render loop
 	const renderLoop = () => {
+
+		context.resetTransform();
 		context.clearRect(0, 0, canvas.width, canvas.height)
+		context.transform(1, 0, scene.xOffset, 1, 0, scene.yOffset)
+
 		scene.render(context);
+		
 		requestAnimationFrame(renderLoop);
 	}
 	renderLoop();
 
-	setInterval(scene.gameTick, 20)
+	const gameTick = () => {
+		scene.gameTick();
+	}
+
+	setInterval(gameTick, 20)
 
 }
 window.addEventListener("DOMContentLoaded", main)

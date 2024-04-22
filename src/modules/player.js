@@ -54,8 +54,8 @@ export class Player extends AnimatedSprite {
 
 
 	move() {
-		this.updateX(this.x + this.dx);
-		this.updateY(this.y + this.dy);
+		this.updateX(this.x + this.vector.dx);
+		this.updateY(this.y + this.vector.dy);
 	}
 
 	/**
@@ -72,6 +72,14 @@ export class Player extends AnimatedSprite {
 	updateY(y) {
 		this.y = y;
 		this.circle.y = y + this.centerOffsetY;
+	}
+
+	get dx() {
+		return this.vector.dx
+	}
+
+	get dy() {
+		return this.vector.dy
 	}
 
 	/**
