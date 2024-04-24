@@ -20,8 +20,12 @@ export class Scene {
 		 */
 		this.yOffset = 0;
 		/**
+		 * The previous 5 ticks of camera movement
+		 */
+		this.history = []
+		/**
 		 * The list of keys currently held down
-		 * 
+		 *
 		 * Uses KeyboardEvent.code, not keyCode
 		 * (like KeyW and KeyO)
 		 */
@@ -84,8 +88,6 @@ export class Scene {
 		ctx.arc(this.player.circle.x, this.player.circle.y, this.player.circle.r, 0, twoPI);
 		ctx.stroke();
 		ctx.beginPath();
-
-		console.log(this.player.x, this.player.y, this.player.dx, this.player.dy)
 	}
 
 	/**
@@ -97,45 +99,59 @@ export class Scene {
 
 				if (collision.id) {
 					const entity = this.entities[collision.id]; //collision is assumed to be an owned collision
-					this.player.bounce(typeof entity.special !== "undefined" ? entity.special() : true) // if special, call special first
+					this.player.bounce(typeof entity.special !== "undefined" ? entity.special() : true, collision) // if special, call special first
 				} else {
-					this.player.bounce(true);
+					this.player.bounce(true, collision);
 				}
 				return true
 			}
 		}
 		return false
 	}
-	
+
 	gameTick = () => {
 		let didCollide = this.doCollisions();
-		
+
 		//Player movement logic
-		for (let key in this.heldKeys) {
+		for (let key of this.heldKeys) {
+			console.log(key)
 			switch(key) {
 				case "KeyD":
-					this.player.dx += 10;
+					this.player.dx += 5;
 					break;
 				case "KeyA":
-					this.player.dx -= 10;
+					this.player.dx -= 5;
 					break;
 				case "KeyW":
 				case "Space": //if this tick had a collision
 					if (didCollide) {
-						this.player.dy += 200;
+						this.player.dy -= 50;
 					}
 					break;
 			}
 		}
 
 		//gravity
-		this.player.dy = this.player.dy - 10;
+		if (!didCollide) {
+			this.player.dy = this.player.dy + 2;
+		}
 		this.player.vector.recalcMagnitude();
 
 		this.player.move()
 
 		this.timer += .2;
-		this.xOffset = this.player.circle.x; //sets to the center of the player
-		this.yOffset = this.player.circle.y;
+
+		//TODO: make camera floaty by averaging last 5 ticks to stop jittering of player
+		//use array.shift() and pop()
+		this.history.unshift([this.player.circle.x, this.player.circle.y])
+		for (const coord of this.history) {
+			this.xOffset += coord[0];
+			this.yOffset += coord[1];
+		}
+		this.xOffset /= this.history.length;
+		this.yOffset /= this.history.length;
+		if (this.history.length > 6) {
+			this.history.pop();
+		}
 	}
 }

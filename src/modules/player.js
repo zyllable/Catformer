@@ -1,9 +1,12 @@
 import { Circle, Vector } from "./geometry.js";
 import { AnimatedSprite } from "./sprites.js";
 
+//minimum change in velocity for the entity to move
+const moveThreshold = 2;
+
 /**
  * Represents the player and the methods to control it
- * 
+ *
  * x and y should not be directly changed, call updateX() and updateY() instead
  *
  * Spritesheet information:
@@ -46,14 +49,19 @@ export class Player extends AnimatedSprite {
 		this.circle = new Circle(this.x + this.centerOffsetX, this.y + this.centerOffsetY, collisionRadius);
 		/**
 		 * A reused vector that represents the motion of the player
-		 * 
+		 *
 		 * Coordinates are set to 0 and are not used
 		 */
 		this.vector = new Vector(0, 0, 0, 0);
 	}
 
-
 	move() {
+		if (this.vector.dy < moveThreshold && this.vector.dy > -moveThreshold) {
+			this.vector.dy = 0;
+		}
+		if (this.vector.dx < moveThreshold && this.vector.dx > -moveThreshold) {
+			this.vector.dx = 0;
+		}
 		this.updateX(this.x + this.vector.dx);
 		this.updateY(this.y + this.vector.dy);
 	}
@@ -100,16 +108,19 @@ export class Player extends AnimatedSprite {
 	 * Bounces the sphere off of a line (vector)
 	 * @param {Vector} collidedVector - The vector the player collided with
 	 */
-	bounce(collidedVector) {
-		//collided vector's angle
-		let collidedAngle = collidedVector.angle;
-		//moving vector's angle
-		let moveAngle = this.vector.angle;
-		//the angle between the two vectors
-		let angleBetween = moveAngle - collidedAngle;
-		//ending movement vector's angle
-		let finalAngle = (Math.PI / 2 - Math.abs(2 * angleBetween) * Math.sign(angleBetween) + Math.PI);
-		this.dx = Math.cos(finalAngle) * this.vector.magnitude;
-		this.dy = Math.sin(finalAngle) * this.vector.magnitude;
+	bounce(yes, collidedVector) {
+		if (yes) {
+			//collided vector's angle
+			let collidedAngle = collidedVector.angle;
+			//moving vector's angle
+			let moveAngle = this.vector.angle;
+			//the angle between the two vectors
+			let angleBetween = moveAngle - collidedAngle;
+			//ending movement vector's angle
+			let finalAngle = (Math.PI / 2 - Math.abs(2 * angleBetween) * Math.sign(angleBetween) + Math.PI);
+			//the dot product between the unit vectors of each (decides direction similarity)
+			this.dx = Math.cos(finalAngle) * this.vector.magnitude * 2;
+			this.dy = Math.sin(finalAngle) * this.vector.magnitude * .7; //to slowly bounce down
+		}
 	}
 }

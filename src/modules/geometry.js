@@ -139,9 +139,9 @@ export class Vector {
 
 	/**
 	 * Recalculates the magnitude
-	 * 
+	 *
 	 * Required any time the vector's magnitude changes
-	 * 
+	 *
 	 * Not used in setters due to the problem of changing both vectors at the same time calling it twice
 	 */
 	recalcMagnitude() {
@@ -207,8 +207,8 @@ export const getProjectedPoint = (x, y, vector) => {
 	let acVector = [x - vector.x, y - vector.y] //dx and dy between starting point of vector and point
 
 	let dotABAC = Vector.simpleDotProduct(abVector, acVector);
-	let dotACAB = Vector.simpleDotProduct(acVector, abVector);
-	let adVector = [abVector[0] * dotABAC / dotACAB, abVector[1] * dotABAC / dotACAB]//vector between a and d, the projected point
+	let dotABAB = Vector.simpleDotProduct(abVector, abVector);
+	let adVector = [abVector[0] * dotABAC / dotABAB, abVector[1] * dotABAC / dotABAB]//vector between a and d, the projected point
 	return [vector.x + adVector[0], vector.y + adVector[1]];
 }
 

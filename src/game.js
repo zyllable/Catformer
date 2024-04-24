@@ -24,18 +24,18 @@ const main = () => {
 
 	//create objects in scene
 	const scene = new Scene();
-	scene.player = new Player(0, 0, -500, 100, 100, new SpriteSheet(preloadedImage, 512, 512), 50)
-	scene.addCollision(new ReferringVector(-100, 300, 200, 0, 0))
+	scene.player = new Player(0, -25, -500, 100, 100, new SpriteSheet(preloadedImage, 512, 512), 50)
+	scene.addCollision(new ReferringVector(-1000, 300, 2000, 150, 0))
 
-	//create render loop
+	//create loops
 	const renderLoop = () => {
 
 		context.resetTransform();
 		context.clearRect(0, 0, canvas.width, canvas.height)
-		context.transform(1, 0, scene.xOffset, 1, 0, scene.yOffset)
+		context.transform(1, 0, 0, 1, parseInt(canvas.width / 2 - scene.xOffset), parseInt(canvas.height / 2 - scene.yOffset));
 
 		scene.render(context);
-		
+
 		requestAnimationFrame(renderLoop);
 	}
 	renderLoop();
@@ -46,6 +46,19 @@ const main = () => {
 
 	setInterval(gameTick, 20)
 
+	//create listeners for keys
+	document.addEventListener("keydown", (e) => {
+		if (!e.repeat) {
+			scene.heldKeys.push(e.code);
+		}
+	})
+	document.addEventListener("keyup", (e) => {
+		const index = scene.heldKeys.indexOf(e.code);
+		if (index != -1) {
+			scene.heldKeys.splice(index, 1)
+		}
+		console.log(scene.heldKeys)
+	})
 }
 window.addEventListener("DOMContentLoaded", main)
 const preloadedImage = createImage("./testingAssets/characterSpriteSheet.png")

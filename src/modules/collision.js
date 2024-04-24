@@ -29,5 +29,6 @@ export const collideCircleVector = (circle, vector) => {
 	const [x, y] = getProjectedPoint(circle.x, circle.y, vector); //x and y of the nearest point on the vector to the center of the sphere
 	const dx = circle.x - x;
 	const dy = circle.y - y;
-	return circle.r <= pythagoreanTheorem(dx, dy); //is the distance between circle center and point greater than radius
+	const pth = pythagoreanTheorem(dx, dy)
+	return circle.r >= pth;
 }
