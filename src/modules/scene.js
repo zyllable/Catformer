@@ -114,7 +114,6 @@ export class Scene {
 
 		//Player movement logic
 		for (let key of this.heldKeys) {
-			console.log(key)
 			switch(key) {
 				case "KeyD":
 					this.player.dx += 5;
@@ -141,17 +140,27 @@ export class Scene {
 
 		this.timer += .2;
 
-		//TODO: make camera floaty by averaging last 5 ticks to stop jittering of player
-		//use array.shift() and pop()
+		this.xOffset = this.player.circle.x;
+		this.yOffset = this.player.circle.y;
+
+		//TODO: fix floaty camera to make it actually track
+
+		/*let length = this.history.length;
+
+		this.xOffset = 0;
+		this.yOffset = 0;
+		if (this.history.length > 6) {
+			this.history.pop();
+		}
 		this.history.unshift([this.player.circle.x, this.player.circle.y])
 		for (const coord of this.history) {
 			this.xOffset += coord[0];
 			this.yOffset += coord[1];
 		}
-		this.xOffset /= this.history.length;
-		this.yOffset /= this.history.length;
-		if (this.history.length > 6) {
-			this.history.pop();
-		}
+		this.xOffset /= length;
+		this.xOffset += this.player.dx;
+		this.yOffset /= length;
+		this.yOffset += this.player.dy*/
+
 	}
 }

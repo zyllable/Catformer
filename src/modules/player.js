@@ -118,9 +118,11 @@ export class Player extends AnimatedSprite {
 			let angleBetween = moveAngle - collidedAngle;
 			//ending movement vector's angle
 			let finalAngle = (Math.PI / 2 - Math.abs(2 * angleBetween) * Math.sign(angleBetween) + Math.PI);
-			//the dot product between the unit vectors of each (decides direction similarity)
-			this.dx = Math.cos(finalAngle) * this.vector.magnitude * 2;
-			this.dy = Math.sin(finalAngle) * this.vector.magnitude * .7; //to slowly bounce down
+			//TODO: get similarity ratio to determine how the momentum of each direction should be changed (dot product between unit vectors and {1, 0} (dx) and {0, 1} (dy))
+			let finalVector = [Math.cos(finalAngle), Math.sin(finalAngle)]
+			this.dx *= (1 - finalVector[0]) * .9;
+			this.dy *= -Math.abs(finalVector[1]) * .5;
+			console.log(this.dx, this.dy)
 		}
 	}
 }

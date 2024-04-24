@@ -25,7 +25,7 @@ const main = () => {
 	//create objects in scene
 	const scene = new Scene();
 	scene.player = new Player(0, -25, -500, 100, 100, new SpriteSheet(preloadedImage, 512, 512), 50)
-	scene.addCollision(new ReferringVector(-1000, 300, 2000, 150, 0))
+	scene.addCollision(new ReferringVector(-1000, 300, 2000, 0, 0))
 
 	//create loops
 	const renderLoop = () => {
@@ -34,14 +34,16 @@ const main = () => {
 		context.clearRect(0, 0, canvas.width, canvas.height)
 		context.transform(1, 0, 0, 1, parseInt(canvas.width / 2 - scene.xOffset), parseInt(canvas.height / 2 - scene.yOffset));
 
+
 		scene.render(context);
 
-		requestAnimationFrame(renderLoop);
+		//requestAnimationFrame(renderLoop);
 	}
 	renderLoop();
 
 	const gameTick = () => {
 		scene.gameTick();
+		renderLoop()
 	}
 
 	setInterval(gameTick, 20)
@@ -57,7 +59,6 @@ const main = () => {
 		if (index != -1) {
 			scene.heldKeys.splice(index, 1)
 		}
-		console.log(scene.heldKeys)
 	})
 }
 window.addEventListener("DOMContentLoaded", main)
