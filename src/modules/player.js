@@ -108,7 +108,7 @@ export class Player extends AnimatedSprite {
 	 * Bounces the sphere off of a line (vector)
 	 * @param {Vector} collidedVector - The vector the player collided with
 	 */
-	bounce(yes, collidedVector) {
+	bounce(yes, collidedVector, rejectionDistance) {
 		if (yes) {
 			//collided vector's angle
 			let collidedAngle = collidedVector.angle;
@@ -118,11 +118,21 @@ export class Player extends AnimatedSprite {
 			let angleBetween = moveAngle - collidedAngle;
 			//ending movement vector's angle
 			let finalAngle = (Math.PI / 2 - Math.abs(2 * angleBetween) * Math.sign(angleBetween) + Math.PI);
-			//TODO: get similarity ratio to determine how the momentum of each direction should be changed (dot product between unit vectors and {1, 0} (dx) and {0, 1} (dy))
+			//TODO: get similarity ratio to determine how the momentum of each direction should be proportioned
 			let finalVector = [Math.cos(finalAngle), Math.sin(finalAngle)]
-			this.dx *= (1 - finalVector[0]) * .9;
-			this.dy *= -Math.abs(finalVector[1]) * .5;
-			console.log(this.dx, this.dy)
+
+			let dxComparison = Vector.simpleDotProduct([0, 1], finalVector);
+			//let dyComparison = Vector.simpleDotProduct([1, 0], finalVector) //really not sure why this one isnt necessary but the dx one is
+
+			this.dx *= dxComparison * .9;
+			this.dx += rejectionDistance * finalVector[0]; //since there are 2 different factors distributive property does not work
+			this.dy += rejectionDistance;
+			this.dy *= -finalVector[1] * .5; //distributive property can be used here
+			this.move()
 		}
 	}
 }
+
+/*
+
+*/

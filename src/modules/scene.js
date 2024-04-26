@@ -86,6 +86,8 @@ export class Scene {
 		}
 		ctx.moveTo(this.player.circle.x, this.player.circle.y);
 		ctx.arc(this.player.circle.x, this.player.circle.y, this.player.circle.r, 0, twoPI);
+		ctx.moveTo(this.player.circle.x, this.player.circle.y);
+		ctx.lineTo(this.player.circle.x + this.player.dx, this.player.circle.y + this.player.dy)
 		ctx.stroke();
 		ctx.beginPath();
 	}
@@ -95,13 +97,13 @@ export class Scene {
 	 */
 	doCollisions = () => {
 		for (let collision of this.collisions) {
-			if (collideCircleVector(this.player.circle, collision)) {
-
+			let [collided, rejectionDistance] = collideCircleVector(this.player.circle, collision)
+			if (collided) {
 				if (collision.id) {
 					const entity = this.entities[collision.id]; //collision is assumed to be an owned collision
-					this.player.bounce(typeof entity.special !== "undefined" ? entity.special() : true, collision) // if special, call special first
+					this.player.bounce(typeof entity.special !== "undefined" ? entity.special() : true, collision, rejectionDistance) // if special, call special first
 				} else {
-					this.player.bounce(true, collision);
+					this.player.bounce(true, collision, rejectionDistance);
 				}
 				return true
 			}
@@ -113,13 +115,17 @@ export class Scene {
 		let didCollide = this.doCollisions();
 
 		//Player movement logic
+		let velocityCurve = 50 / this.player.vector.magnitude
+		if (velocityCurve == Infinity) {
+			velocityCurve = 1;
+		}
 		for (let key of this.heldKeys) {
-			switch(key) {
+			switch (key) {
 				case "KeyD":
-					this.player.dx += 5;
+					this.player.dx += velocityCurve;
 					break;
 				case "KeyA":
-					this.player.dx -= 5;
+					this.player.dx -= velocityCurve;
 					break;
 				case "KeyW":
 				case "Space": //if this tick had a collision

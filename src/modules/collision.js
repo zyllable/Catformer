@@ -30,5 +30,25 @@ export const collideCircleVector = (circle, vector) => {
 	const dx = circle.x - x;
 	const dy = circle.y - y;
 	const pth = pythagoreanTheorem(dx, dy)
-	return circle.r >= pth;
+	return [circle.r >= pth && collideVectorPoint(vector, x, y), circle.r - pth];
+}
+
+/**
+ * Determines if a point lies on a vector
+ * @param {Vector} vector
+ * @param {number} x
+ * @param {number y}
+ */
+export const collideVectorPoint = (vector, x, y) => {
+	//AB is the vector line, C is point
+	//if AC+BC > AB then off the line (possible rounding errors, ending logic must be redone if it happens)
+	const a = [vector.x, vector.y];
+	const b = [vector.x + vector.dx, vector.y + vector.dy];
+	const c = [x, y];
+
+	const ab = vector.magnitude;
+	const ac = pythagoreanTheorem(a[0] - c[0], a[1] - c[1]);
+	const bc = pythagoreanTheorem(b[0] - c[0], b[1] - c[1]);
+
+	return ab >= ac + bc;
 }

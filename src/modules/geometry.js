@@ -146,6 +146,7 @@ export class Vector {
 	 */
 	recalcMagnitude() {
 		this.magnitude = Math.sqrt((this.dx ** 2) + (this.dy ** 2));
+		this.angle = Math.atan(this.dy, this.dx);
 	}
 
 	/**
