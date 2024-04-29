@@ -115,7 +115,7 @@ export class Scene {
 		let didCollide = this.doCollisions();
 
 		//Player movement logic
-		let velocityCurve = 50 / this.player.vector.magnitude
+		let velocityCurve = 25 / this.player.vector.magnitude
 		if (velocityCurve == Infinity) {
 			velocityCurve = 1;
 		}

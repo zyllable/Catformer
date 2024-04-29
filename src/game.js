@@ -25,8 +25,10 @@ const main = () => {
 	//create objects in scene
 	const scene = new Scene();
 	scene.player = new Player(0, -25, -500, 100, 100, new SpriteSheet(preloadedImage, 512, 512), 50)
-	scene.addCollision(new ReferringVector(1000, 300, -2000, 0, 0))
-	scene.addCollision(new ReferringVector(1000, 300, 0, -1000, 0))
+	scene.addCollision(new ReferringVector(1000, 300, -2000, 0, 0));
+	scene.addCollision(new ReferringVector(1000, 300, 0, -1000, 0));
+	scene.addCollision(new ReferringVector(-1000, 300, 0, -1000, 0));
+	scene.addCollision(new ReferringVector(1000, -700, -2000, 0, 0))
 
 	//create loops
 	const renderLoop = () => {
