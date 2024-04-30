@@ -72,10 +72,11 @@ export class Scene {
 	 */
 	render(ctx) {
 		for (let entity of this.entities) {
-			entity.render(context, this.xOffset, this.yOffset);
+			entity.render(ctx, this.xOffset, this.yOffset);
 		}
+		this.player.render(ctx)
 		for (let ui of this.ui) {
-			ui.render(context);
+			ui.render(ctx);
 		}
 
 		//debug
@@ -130,7 +131,7 @@ export class Scene {
 				case "KeyW":
 				case "Space": //if this tick had a collision
 					if (didCollide) {
-						this.player.dy -= 50;
+						this.player.dy -= 10;
 					}
 					break;
 			}
@@ -145,6 +146,14 @@ export class Scene {
 		this.player.move()
 
 		this.timer += .2;
+
+		if (this.player.dx > 0) {
+			this.player.switchAnimationCheap(1);
+		} else if (this.player.dx < 0) {
+			this.player.switchAnimationCheap(2);
+		} else {
+			this.player.switchAnimationCheap(0);
+		}
 
 		this.xOffset = this.player.circle.x;
 		this.yOffset = this.player.circle.y;

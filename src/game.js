@@ -24,7 +24,15 @@ const main = () => {
 
 	//create objects in scene
 	const scene = new Scene();
-	scene.player = new Player(0, -25, -500, 100, 100, new SpriteSheet(preloadedImage, 512, 512), 50)
+	const characterSheet = new SpriteSheet(characterImage, 128, 128)
+	characterSheet.createFrameGroup(0);
+	characterSheet.createFrameGroupInRange(0, 7);
+	characterSheet.createFrameGroup(0, 7, 6, 5, 4, 3, 2, 1);
+	characterSheet.createFrameGroup(8)
+	scene.player = new Player(0, -25, -500, 150, 150, characterSheet, 60)
+
+	scene.player.startAnimation(false, 125)
+
 	scene.addCollision(new ReferringVector(1000, 300, -2000, 0, 0));
 	scene.addCollision(new ReferringVector(1000, 300, 0, -1000, 0));
 	scene.addCollision(new ReferringVector(-1000, 300, 0, -1000, 0));
@@ -40,13 +48,12 @@ const main = () => {
 
 		scene.render(context);
 
-		//requestAnimationFrame(renderLoop);
+		requestAnimationFrame(renderLoop);
 	}
 	renderLoop();
 
 	const gameTick = () => {
 		scene.gameTick();
-		renderLoop()
 	}
 
 	setInterval(gameTick, 20)
@@ -64,5 +71,5 @@ const main = () => {
 		}
 	})
 }
-window.addEventListener("DOMContentLoaded", main)
-const preloadedImage = createImage("./testingAssets/characterSpriteSheet.png")
+window.addEventListener("DOMContentLoaded", main);
+const characterImage = createImage("./assets/cat.png");

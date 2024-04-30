@@ -84,7 +84,6 @@ export class SpriteSheet {
 				this.frames.push(new Box(undefined, frameWidth * ii, frameHeight * i, frameWidth, frameHeight))
 			}
 		}
-		this.currentFrame = this.frames[0];
 	}
 	static duplicateSpriteSheet(spriteSheet) {
 		let newSheet = this(spriteSheet.image, spriteSheet.frameWidth, spriteSheet.frameHeight);
@@ -92,6 +91,12 @@ export class SpriteSheet {
 			this.frameGroups.push(frameGroup);
 		}
 		return newSheet;
+	}
+
+	get currentFrame() {
+		let x = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex]
+		console.log(x)
+		return x;
 	}
 
 	/**
@@ -111,7 +116,7 @@ export class SpriteSheet {
 	 * @param {number} end
 	 */
 	createFrameGroupInRange(start, end) {
-		this.frameGroups[this.frameGroups.length] = getIntegerRange(start, end);
+		this.createFrameGroup(...getIntegerRange(start, end));
 	}
 
 	/**
@@ -120,7 +125,7 @@ export class SpriteSheet {
 	 */
 	toFrame(i) {
 		this.currentFrameIndex = i;
-		this.currentFrame = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex];
+		//this.currentFrame = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex];
 	}
 
 	/**
@@ -131,7 +136,6 @@ export class SpriteSheet {
 		this.currentFrameGroup = i;
 		this.toFrame(0);
 	}
-
 	/**
 	 * Moves to the previous frame in the frame group
 	 * @returns Boolean - Whether the animation looped or not
@@ -141,7 +145,7 @@ export class SpriteSheet {
 		if (this.currentFrameIndex == this.frameGroups[this.currentFrameGroup].length) {
 			this.currentFrameIndex = 0;
 		}
-		this.currentFrame = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex];
+		//this.currentFrame = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex];
 		if (this.currentFrameIndex == 0) {
 			return true;
 		}
@@ -156,7 +160,7 @@ export class SpriteSheet {
 		if (this.currentFrameIndex == -1) {
 			this.currentFrameIndex = this.frameGroups[this.currentFrameGroup].length - 1;
 		}
-		this.currentFrame = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex];
+		//this.currentFrame = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex];
 		if (this.currentFrameIndex == 0) {
 			return true;
 		}
@@ -191,7 +195,7 @@ export class AnimatedSprite extends Sprite {
 	 * @param {number} xOffset - The offset of the camera view
 	 * @param {number} yOffset - The y offset of the camera view
 	 */
-	render(context, xOffset = 0, yOffset = 0) {
+	render(context) {
 		context.save();
 		context.rotate(-this.angle); //negative otherwise it works clockwise
 		context.drawImage(this.spriteSheet.image,
@@ -199,12 +203,12 @@ export class AnimatedSprite extends Sprite {
 			this.spriteSheet.currentFrame.y,
 			this.spriteSheet.frameWidth,
 			this.spriteSheet.frameHeight,
-			this.x - xOffset,
-			this.y - yOffset,
+			this.x,
+			this.y,
 			this.width,
 			this.height
 		)
-		context.restore
+		context.restore();
 	}
 
 	//stores the interval for frameswaps
@@ -212,7 +216,7 @@ export class AnimatedSprite extends Sprite {
 
 	/**
 	 * Starts the current animation of the sprite
-	 * 
+	 *
 	 * Supports chaining
 	 * @param {boolean} reverse - Whether the animation runs in reverse or not
 	 * @param {number} interval - The interval in milliseconds between each frome
@@ -229,7 +233,7 @@ export class AnimatedSprite extends Sprite {
 
 	/**
 	 * Stops the current animation of the sprite
-	 * 
+	 *
 	 * Supports Chaining
 	 * @returns this
 	 */
@@ -240,7 +244,7 @@ export class AnimatedSprite extends Sprite {
 
 	/**
 	 * Switches to a specific frame in the current group and optionally to a different frame group
-	 * 
+	 *
 	 * Supports chaining
 	 * @param {number} frame - The frame index to switch to
 	 * @param {number} group - The frame group to switch to
@@ -255,14 +259,23 @@ export class AnimatedSprite extends Sprite {
 	}
 
 	/**
-	 * Switches to a specific animation 
-	 * 
+	 * Switches to a specific animation
+	 *
 	 * Supports chaining
 	 * @param {number} frameGroup - The animation to switch to
 	 * @returns this
 	 */
 	switchAnimation(frameGroup) {
 		this.spriteSheet.switchGroup(frameGroup);
+		return this;
+	}
+	/**
+	 * calls switchAnimation if the framegroup is not already the desired framegroup
+	 */
+	switchAnimationCheap(frameGroup) {
+		if (this.spriteSheet.currentFrameGroup != frameGroup) {
+			this.switchAnimation(frameGroup);
+		}
 		return this;
 	}
 

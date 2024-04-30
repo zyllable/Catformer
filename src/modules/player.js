@@ -25,7 +25,7 @@ const moveThreshold = 2;
  *
  * Group 6 is for air/track move down
  *
- * Group 7 is for the death animation
+ * Group 7 is for the death animation (currently implemented as 3)
  */
 export class Player extends AnimatedSprite {
 	/**
@@ -124,10 +124,10 @@ export class Player extends AnimatedSprite {
 			let dxComparison = Vector.simpleDotProduct([0, 1], finalVector);
 			//let dyComparison = Vector.simpleDotProduct([1, 0], finalVector); //really not sure why this one isnt necessary but the dx one is
 
-			this.dx = this.dx * dxComparison * .9;
+			this.dx = this.dx * dxComparison * .6;
 			this.dx += rejectionDistance * finalVector[0]; //since there are 2 different factors distributive property does not work
 			this.dy += rejectionDistance;
-			this.dy *= -finalVector[1] * .5; //distributive property can be used here
+			this.dy *= -finalVector[1] * .55; //distributive property can be used here
 			//this.move()
 		}
 	}
