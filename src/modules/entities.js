@@ -7,13 +7,13 @@ import { AnimatedSprite } from './sprites.js';
  * @extends AnimatedSprite
  */
 export class SpecialEntity extends AnimatedSprite {
-	constructor(id, spriteSheet, x, y, width, height) {
-		super(id, spriteSheet, x, y, width, height);
+	constructor(id, spriteSheet, x, y, width, height, angle) {
+		super(id, spriteSheet, x, y, width, height, angle);
 		/**
 		 * The parent scene of the entity, not defined until after it is added to the scene
 		 */
 		this.parent = null;
-		this.special = true;
+		this.isSpecial = true;
 	}
 
 	/**
@@ -34,7 +34,7 @@ export class SpecialEntity extends AnimatedSprite {
 export class Water extends SpecialEntity {
 	special() {
 		this.parent.killPlayer();
-		return true;
+		return false;
 	}
 }
 

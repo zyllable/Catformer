@@ -52,8 +52,9 @@ export class Scene {
 	 * @param {true} special - Whether the entity is a SpecialEntity
 	 */
 	addEntity(entity, special) {
-		this.entities.push(entity);
+		this.entities[entity.id] = entity;
 		if (special) {
+			console.log(entity)
 			entity.parent = this;
 		}
 	}
@@ -81,7 +82,7 @@ export class Scene {
 
 		//debug
 		//renders all collisions
-		for (let collision of this.collisions) {
+		/*for (let collision of this.collisions) {
 			ctx.moveTo(collision.x, collision.y);
 			ctx.lineTo(collision.x + collision.dx, collision.y + collision.dy);
 		}
@@ -90,26 +91,27 @@ export class Scene {
 		ctx.moveTo(this.player.circle.x, this.player.circle.y);
 		ctx.lineTo(this.player.circle.x + this.player.dx, this.player.circle.y + this.player.dy)
 		ctx.stroke();
-		ctx.beginPath();
+		ctx.beginPath();*/
 	}
 
 	/**
 	 * determines if the player should bounce, priority is based on order of collision array
 	 */
 	doCollisions = () => {
+		let result = false;
 		for (let collision of this.collisions) {
 			let [collided, rejectionDistance] = collideCircleVector(this.player.circle, collision)
 			if (collided) {
-				if (collision.id) {
+				if (!isNaN(collision.id)) {
 					const entity = this.entities[collision.id]; //collision is assumed to be an owned collision
-					this.player.bounce(typeof entity.special !== "undefined" ? entity.special() : true, collision, rejectionDistance) // if special, call special first
+					this.player.bounce(entity.special(), collision, rejectionDistance) // if special, call special first
 				} else {
 					this.player.bounce(true, collision, rejectionDistance);
 				}
-				return true
+				result = true;
 			}
 		}
-		return false
+		return result;
 	}
 
 	gameTick = () => {
@@ -177,5 +179,15 @@ export class Scene {
 		this.yOffset /= length;
 		this.yOffset += this.player.dy*/
 
+	}
+	/**
+	 * resets the player's position
+	 * currently hardcoded to make it easier for me
+	 */
+	killPlayer() {
+		this.player.dx = 0;
+		this.player.dy = 0;
+		this.player.x = -500;
+		this.player.y = -300;
 	}
 }

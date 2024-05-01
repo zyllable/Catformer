@@ -124,7 +124,7 @@ export class Player extends AnimatedSprite {
 			let dxComparison = Vector.simpleDotProduct([0, 1], finalVector);
 			//let dyComparison = Vector.simpleDotProduct([1, 0], finalVector); //really not sure why this one isnt necessary but the dx one is
 
-			this.dx = this.dx * dxComparison * .6;
+			this.dx = this.dx * dxComparison * .7;
 			this.dx += rejectionDistance * finalVector[0]; //since there are 2 different factors distributive property does not work
 			this.dy += rejectionDistance;
 			this.dy *= -finalVector[1] * .55; //distributive property can be used here

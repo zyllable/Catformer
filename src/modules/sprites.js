@@ -86,16 +86,15 @@ export class SpriteSheet {
 		}
 	}
 	static duplicateSpriteSheet(spriteSheet) {
-		let newSheet = this(spriteSheet.image, spriteSheet.frameWidth, spriteSheet.frameHeight);
-		for (let frameGroup in spriteSheet.frameGroups) {
-			this.frameGroups.push(frameGroup);
+		let newSheet = new this(spriteSheet.image, spriteSheet.frameWidth, spriteSheet.frameHeight);
+		for (let frameGroup of spriteSheet.frameGroups) {
+			newSheet.frameGroups.push(frameGroup);
 		}
 		return newSheet;
 	}
 
 	get currentFrame() {
 		let x = this.frameGroups[this.currentFrameGroup][this.currentFrameIndex]
-		console.log(x)
 		return x;
 	}
 
@@ -197,7 +196,6 @@ export class AnimatedSprite extends Sprite {
 	 */
 	render(context) {
 		context.save();
-		context.rotate(-this.angle); //negative otherwise it works clockwise
 		context.drawImage(this.spriteSheet.image,
 			this.spriteSheet.currentFrame.x,
 			this.spriteSheet.currentFrame.y,
